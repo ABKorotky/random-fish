@@ -1,25 +1,40 @@
-__all__ = ("RandString",)
+__all__ = (
+    "RandString",
+    "RandText",
+)
 
 import logging
 import typing as t
-from random import choice
 from string import ascii_letters
 
-from .base import BaseRandCollectionGenerator
+from .base import RandomValueBuilderInterface
+from .choice import RandChoice
+from .collections import RandSequenceGenerator
 
 if t.TYPE_CHECKING:
-    ...
+    from .collections import LengthType
 
 logger = logging.getLogger(__name__)
 
 
-class RandString(BaseRandCollectionGenerator[str]):
-    def __init__(self, chars: str = ascii_letters, **kwargs):
-        super().__init__(**kwargs)
-        self._chars = chars
+class RandString(RandomValueBuilderInterface[str]):
+    def __init__(self, len: "LengthType", chars: str = ascii_letters):
+        self._gen = RandSequenceGenerator(len=len, item=RandChoice(*chars))
 
     def run(self) -> str:
-        _len = self._get_rand_len()
-        value = "".join(choice(self._chars) for _ in range(_len))
-        logger.debug("Random generator: %r. Value: %r.", self, value)
+        value = "".join(list(self._gen.run()))
+        logger.debug("value: %r.", value)
+        return value
+
+
+class RandText(RandomValueBuilderInterface[str]):
+
+    def __init__(
+        self, len: "LengthType", word: "RandomValueBuilderInterface[str]"
+    ):
+        self._gen = RandSequenceGenerator(len=len, item=word)
+
+    def run(self) -> str:
+        value = " ".join(list(self._gen.run()))
+        logger.debug("value: %r.", value)
         return value

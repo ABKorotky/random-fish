@@ -21,5 +21,5 @@ class AsyncRandString(BaseAsyncRandCollectionGenerator[str]):
     async def run(self) -> str:
         _len = await self._get_rand_len()
         value = "".join(choice(self._chars) for _ in range(_len))
-        logger.debug("Random generator: %r. Value: %r.", self, value)
+        logger.debug("value: %r.", value)
         return value

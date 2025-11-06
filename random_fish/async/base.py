@@ -1,5 +1,5 @@
 __all__ = (
-    "AsyncRandomValueGeneratorInterface",
+    "AsyncRandomValueBuilderInterface",
     "BaseAsyncRandCollectionGenerator",
 )
 
@@ -15,17 +15,17 @@ logger = logging.getLogger(__name__)
 ValueTypeVar = t.TypeVar("ValueTypeVar")
 
 
-class AsyncRandomValueGeneratorInterface(t.Generic[ValueTypeVar]):
+class AsyncRandomValueBuilderInterface(t.Generic[ValueTypeVar]):
     async def run(self) -> ValueTypeVar:
         raise NotImplementedError(f"{self.__class__}.run")
 
 
 class BaseAsyncRandCollectionGenerator(
-    AsyncRandomValueGeneratorInterface[ValueTypeVar], t.Generic[ValueTypeVar]
+    AsyncRandomValueBuilderInterface[ValueTypeVar], t.Generic[ValueTypeVar]
 ):
 
     def __init__(
-        self, len: t.Union[int, "AsyncRandomValueGeneratorInterface[int]"]
+        self, len: t.Union[int, "AsyncRandomValueBuilderInterface[int]"]
     ):
         self._len = len
 

@@ -22,5 +22,5 @@ class AsyncRandText(BaseAsyncRandCollectionGenerator[str]):
     async def run(self) -> str:
         _words_gen = AsyncRandList(len=self._len, item=self._word_generator)
         value = " ".join(await _words_gen.run())
-        logger.debug("Random generator: %r. Value: %r.", self, value)
+        logger.debug("value: %r.", value)
         return value

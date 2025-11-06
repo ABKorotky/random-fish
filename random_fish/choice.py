@@ -7,7 +7,7 @@ import logging
 import typing as t
 from random import choice
 
-from .base import RandomValueGeneratorInterface
+from .base import RandomValueBuilderInterface
 
 if t.TYPE_CHECKING:
     ...
@@ -18,7 +18,7 @@ ValueTypeVar = t.TypeVar("ValueTypeVar")
 
 
 class RandChoice(
-    RandomValueGeneratorInterface[ValueTypeVar], t.Generic[ValueTypeVar]
+    RandomValueBuilderInterface[ValueTypeVar], t.Generic[ValueTypeVar]
 ):
 
     def __init__(self, *args: ValueTypeVar):
@@ -26,7 +26,7 @@ class RandChoice(
 
     def run(self) -> ValueTypeVar:
         value = choice(self._values)
-        logger.debug("Random generator: %r. Value: %r.", self, value)
+        logger.debug("value: %r.", value)
         return value
 
 

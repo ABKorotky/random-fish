@@ -9,7 +9,7 @@ __all__ = (
     "PY_VERSION",
     "AUTHOR",
     "AUTHOR_EMAIL",
-    "RandomValueGeneratorInterface",
+    "RandomValueBuilderInterface",
     "RandBool",
     "RandInt",
     "RandFloat",
@@ -18,6 +18,8 @@ __all__ = (
     "RandTuple",
     "RandChoice",
     "RandIntChoice",
+    "RandSequenceGenerator",
+    "LengthType",
     "RandList",
     "RandSet",
     "RandDict",
@@ -26,19 +28,20 @@ __all__ = (
     "RandDateTime",
 )
 
-from random_fish.base import RandomValueGeneratorInterface
+from random_fish.base import RandomValueBuilderInterface
 from random_fish.choice import RandChoice, RandIntChoice
 from random_fish.classes import RandDataclass
 from random_fish.collections import (
+    LengthType,
     RandDict,
     RandList,
+    RandSequenceGenerator,
     RandSet,
     RandValuesDict,
 )
 from random_fish.datetimes import RandDateTime
-from random_fish.presets import RandText
 from random_fish.scalar import RandBool, RandFloat, RandInt, RandTuple
-from random_fish.strings import RandString
+from random_fish.strings import RandString, RandText
 
 NAME = "random-fish"
 TITLE = "Random Fish"

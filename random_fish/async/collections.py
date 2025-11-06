@@ -11,7 +11,7 @@ import logging
 import typing as t
 
 from .base import (
-    AsyncRandomValueGeneratorInterface,
+    AsyncRandomValueBuilderInterface,
     BaseAsyncRandCollectionGenerator,
 )
 
@@ -29,7 +29,7 @@ class AsyncRandList(
     t.Generic[ValueTypeVar],
 ):
     def __init__(
-        self, item: "AsyncRandomValueGeneratorInterface[ValueTypeVar]", **kwargs
+        self, item: "AsyncRandomValueBuilderInterface[ValueTypeVar]", **kwargs
     ):
         super().__init__(**kwargs)
         self._item_generator = item
@@ -40,7 +40,7 @@ class AsyncRandList(
         for _ in range(_len):
             value.append(await self._item_generator.run())
             await asyncio.sleep(0)
-        logger.debug("Random generator: %r. Value: %r.", self, value)
+        logger.debug("value: %r.", value)
         return value
 
 
@@ -48,7 +48,7 @@ class AsyncRandSet(
     BaseAsyncRandCollectionGenerator[set[ValueTypeVar]], t.Generic[ValueTypeVar]
 ):
     def __init__(
-        self, item: "AsyncRandomValueGeneratorInterface[ValueTypeVar]", **kwargs
+        self, item: "AsyncRandomValueBuilderInterface[ValueTypeVar]", **kwargs
     ):
         super().__init__(**kwargs)
         self._item_generator = item
@@ -59,7 +59,7 @@ class AsyncRandSet(
         for _ in range(_len):
             value.add(await self._item_generator.run())
             await asyncio.sleep(0)
-        logger.debug("Random generator: %r. Value: %r.", self, value)
+        logger.debug("value: %r.", value)
         return value
 
 
@@ -72,9 +72,9 @@ class AsyncRandDict(
 ):
     def __init__(
         self,
-        key: "AsyncRandomValueGeneratorInterface[KeyTypeVar]",
-        value: "AsyncRandomValueGeneratorInterface[ValueTypeVar]",
-        **kwargs: "AsyncRandomValueGeneratorInterface",
+        key: "AsyncRandomValueBuilderInterface[KeyTypeVar]",
+        value: "AsyncRandomValueBuilderInterface[ValueTypeVar]",
+        **kwargs: "AsyncRandomValueBuilderInterface",
     ):
         super().__init__(**kwargs)
         self._key_generator = key
@@ -88,16 +88,16 @@ class AsyncRandDict(
             v = await self._value_generator.run()
             value[k] = v
             await asyncio.sleep(0)
-        logger.debug("Random generator: %r. Value: %r.", self, value)
+        logger.debug("value: %r.", value)
         return value
 
 
-class AsyncRandValuesDict(AsyncRandomValueGeneratorInterface[dict[str, t.Any]]):
+class AsyncRandValuesDict(AsyncRandomValueBuilderInterface[dict[str, t.Any]]):
 
-    def __init__(self, **kwargs: "AsyncRandomValueGeneratorInterface"):
+    def __init__(self, **kwargs: "AsyncRandomValueBuilderInterface"):
         self._keys_generators = kwargs
 
     async def run(self) -> dict[str, t.Any]:
         value = {k: await g.run() for k, g in self._keys_generators.items()}
-        logger.debug("Random generator: %r. Value: %r.", self, value)
+        logger.debug("value: %r.", value)
         return value
